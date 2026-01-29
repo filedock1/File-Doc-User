@@ -114,21 +114,12 @@ class _VideoScreenState extends State<VideoScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  /// 🔝 TOP BANNER
-                  CustomBannerAd(
-                    bannerKey: 'videoscreen_banner1',
-                    onAdLoaded: _onAdProcessed,
-                  ),
-                  const SizedBox(height: 10),
 
-                  /// 🧩 NATIVE AD
                   NativeVideoAdCard(
                     adKey: 'videoscreenNative1',
                     onAdLoaded: _onAdProcessed,
                   ),
                   const SizedBox(height: 20),
-
-                  /// ▶️ PLAY BUTTON / COUNTDOWN
                   if (!_isButtonVisible)
                     Container(
                       height: 44,
@@ -255,18 +246,11 @@ class _VideoScreenState extends State<VideoScreen> {
 
                   const SizedBox(height: 20),
 
-                  /// 🧩 SECOND NATIVE AD
                   NativeVideoAdCard(
                     adKey: 'videoscreenNative2',
                     onAdLoaded: _onAdProcessed,
                   ),
                   const SizedBox(height: 10),
-
-                  /// 🔻 BOTTOM BANNER
-                  CustomBannerAd(
-                    bannerKey: 'videoscreen_banner2',
-                    onAdLoaded: _onAdProcessed,
-                  ),
                 ],
               ),
             ),

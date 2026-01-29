@@ -27,9 +27,8 @@ class AdManager {
     "morescreen_banner1": "ca-app-pub-3940256099942544/6300978111",
     "morescreen_banner2": "ca-app-pub-3940256099942544/6300978111",
 
-    // Native Video (Using Native Advanced Video Test ID)
-    "videoscreenNative1": "ca-app-pub-3940256099942544/1044960115", // ✅ Native Advanced Image
-    "videoscreenNative2": "ca-app-pub-3940256099942544/1044960115", // ✅ Using Image Advanced for stability
+    "videoscreenNative1": "ca-app-pub-3940256099942544/1044960115",
+    "videoscreenNative2": "ca-app-pub-3940256099942544/1044960115",
     "videoplayerscreenNative": "ca-app-pub-3940256099942544/1044960115", // ✅ Image Advanced for now
 
     // Interstitial

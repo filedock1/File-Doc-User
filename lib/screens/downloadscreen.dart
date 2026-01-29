@@ -402,8 +402,6 @@ class _DownloadScreenState extends State<DownloadScreen> {
                           ),
                   ),
                 ),
-                const SizedBox(height: 12),
-                CustomBannerAd(bannerKey: 'downloadscreen_banner2'),
               ],
             ),
           ),

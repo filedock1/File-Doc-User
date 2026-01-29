@@ -7,7 +7,6 @@ import '../constant/colors.dart';
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
-  // 🔗 Open external links safely
 Future<void> _openLink(String url) async {
   final Uri uri = Uri.parse(url);
 
@@ -63,10 +62,7 @@ Future<void> _openLink(String url) async {
                 const CustomBannerAd(
                   bannerKey: 'morescreen_banner1',
                 ),
-
                 const SizedBox(height: 56),
-
-                // 🔥 App Title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

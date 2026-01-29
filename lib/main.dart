@@ -76,17 +76,18 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  // Initialize FlutterDownloader
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   
-  // Initialize AdMob
-  MobileAds.instance.initialize();
+   MobileAds.instance.initialize();
 
   await AdManager.fetchRemoteConfig();
 
   Get.put(VideoController());
-
-  // 🔥 yahan
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      testDeviceIds: ["B13AF4D0C186E428120F046F167286B1"],
+    ),
+  );
   await initDeepLinks();
 
   runApp(const MyApp());

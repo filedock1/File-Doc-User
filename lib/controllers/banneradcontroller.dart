@@ -21,7 +21,6 @@ class BannerAdController extends GetxController {
       return;
     }
 
-    // Initialize state
     if (_isLoaded.containsKey(bannerKey)) {
        WidgetsBinding.instance.addPostFrameCallback((_) {
          _isLoaded[bannerKey]!.value = false;
@@ -34,11 +33,10 @@ class BannerAdController extends GetxController {
     
     _retryCount.putIfAbsent(bannerKey, () => 0);
 
-    // Dispose existing banner if reloading
     _bannerAds[bannerKey]?.dispose();
 
     final banner = BannerAd(
-      adUnitId: adUnitId,
+      adUnitId: "ca-app-pub-2091017524613192/7904491152",
       size: adSize, 
       request: const AdRequest(),
       listener: BannerAdListener(

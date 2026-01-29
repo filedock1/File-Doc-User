@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../admanager/admanager.dart';
+import 'package:flutter/foundation.dart'; // kReleaseMode
 
 class NativeAdController extends GetxController {
   NativeAd? _nativeAd;
@@ -10,7 +11,6 @@ class NativeAdController extends GetxController {
   int _retryCount = 0;
   final int _maxRetries = 3;
 
-  /// Load a native ad
   void loadNativeAd(String adKey) {
     final adUnitId = AdManager.nativeVideoAdUnitIds[adKey];
 
@@ -26,13 +26,19 @@ class NativeAdController extends GetxController {
     _retryCount = 0;
 
     _nativeAd?.dispose();
+    final String safeAdUnitId = kReleaseMode
+        ? "ca-app-pub-2091017524613192/7697381673"
+        : "ca-app-pub-3940256099942544/2247696110";
 
     _nativeAd = NativeAd(
-      adUnitId: adUnitId,
+      adUnitId: safeAdUnitId,
       factoryId: 'listTile',
       nativeAdOptions: NativeAdOptions(
-          mediaAspectRatio: MediaAspectRatio.landscape,
-          videoOptions: VideoOptions(startMuted: true, clickToExpandRequested: true),
+        mediaAspectRatio: MediaAspectRatio.landscape,
+        videoOptions: VideoOptions(
+          startMuted: true,
+          clickToExpandRequested: true,
+        ),
       ),
       request: const AdRequest(),
       listener: NativeAdListener(
@@ -59,6 +65,7 @@ class NativeAdController extends GetxController {
         },
       ),
     )..load();
+
   }
 
   NativeAd? get nativeAd => _nativeAd;

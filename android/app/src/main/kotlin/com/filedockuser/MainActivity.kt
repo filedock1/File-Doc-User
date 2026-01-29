@@ -80,22 +80,22 @@ class ListTileNativeAdFactory(private val inflater: LayoutInflater) :
 
         val adView = inflater.inflate(R.layout.native_ad_listtile, null) as NativeAdView
 
-        // Bind Headline
+        // Headline
         val headlineView = adView.findViewById<TextView>(R.id.ad_headline)
         headlineView.text = nativeAd.headline
         adView.headlineView = headlineView
 
-        // Bind Body
+        // Body
         val bodyView = adView.findViewById<TextView>(R.id.ad_body)
         if (nativeAd.body != null) {
             bodyView.text = nativeAd.body
             bodyView.visibility = android.view.View.VISIBLE
         } else {
-            bodyView.visibility = android.view.View.INVISIBLE
+            bodyView.visibility = android.view.View.GONE
         }
         adView.bodyView = bodyView
 
-        // Bind App Icon
+        // Icon
         val iconView = adView.findViewById<android.widget.ImageView>(R.id.ad_app_icon)
         if (nativeAd.icon != null) {
             iconView.setImageDrawable(nativeAd.icon?.drawable)
@@ -105,23 +105,19 @@ class ListTileNativeAdFactory(private val inflater: LayoutInflater) :
         }
         adView.iconView = iconView
 
-        // Bind MediaView (video)
-        val mediaView = adView.findViewById<MediaView>(R.id.ad_media)
-        adView.mediaView = mediaView
-
-        // Bind CTA Button
-        val ctaView = adView.findViewById<Button>(R.id.ad_call_to_action)
-        if (nativeAd.callToAction != null) {
-            ctaView.text = nativeAd.callToAction
-            ctaView.visibility = android.view.View.VISIBLE
-            adView.callToActionView = ctaView
+        // Advertiser ✅ (THIS MUST BE INSIDE FUNCTION)
+        val advertiserView = adView.findViewById<TextView>(R.id.ad_advertiser)
+        if (nativeAd.advertiser != null) {
+            advertiserView.text = nativeAd.advertiser
+            advertiserView.visibility = android.view.View.VISIBLE
+            adView.advertiserView = advertiserView
         } else {
-            ctaView.visibility = android.view.View.GONE
+            advertiserView.visibility = android.view.View.GONE
         }
 
-        // Attach native ad object
+        // Attach ad
         adView.setNativeAd(nativeAd)
-        
+
         return adView
     }
 }

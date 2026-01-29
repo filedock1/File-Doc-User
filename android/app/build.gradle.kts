@@ -7,12 +7,17 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-// Load local.properties
 val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
         load(localPropertiesFile.inputStream())
     }
+}
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(keystorePropertiesFile.inputStream())
 }
 
 // Ensure minSdk is at least 24
@@ -37,21 +42,40 @@ android {
         applicationId = "com.ignito.filedockuser"
         minSdk = flutterMinSdkVersion
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 9
+        versionName = "1.9"
 
         manifestPlaceholders.putAll(
             mapOf(
-              "permissionHandlerPermissionGroups" to "storage,photos,videos"
-          )
-)
+                "permissionHandlerPermissionGroups" to "storage,photos,videos"
+            )
+        )
 
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
             signingConfig = signingConfigs.getByName("debug")
         }
+
     }
 }
 

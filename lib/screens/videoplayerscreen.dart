@@ -334,7 +334,6 @@ void _showVideoAdBeforePlay() {
             const SizedBox(height: 14),
             NativeVideoAdCard(adKey: "videoplayerscreenNative"),
             const SizedBox(height: 14),
-            CustomBannerAd(bannerKey: "videoplayerscreen_banner2"),
           ],
         ),
       ),
