@@ -90,16 +90,11 @@ class _VideoScreenState extends State<VideoScreen> {
       backgroundColor: kblack,
       appBar: AppBar(
         backgroundColor: kbg1black500,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/svgicon/logo.svg', width: 33),
-            const SizedBox(width: 9),
-            Image.asset('assets/images/FileDock.png', width: 136),
-          ],
-        ),
+        toolbarHeight: 2,
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: kbg1black500,
           image: const DecorationImage(
@@ -189,8 +184,8 @@ class _VideoScreenState extends State<VideoScreen> {
                         });
                       },
                       child: Container(
-                        height: 44,
-                        width: 179,
+                        height: 49,
+                        width: 189,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           border: Border.all(
@@ -221,6 +216,7 @@ class _VideoScreenState extends State<VideoScreen> {
                                     ),
                                   )
                                 : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
                                         padding:

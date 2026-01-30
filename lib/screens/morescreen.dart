@@ -25,23 +25,7 @@ Future<void> _openLink(String url) async {
       backgroundColor: kblack,
       appBar: AppBar(
         backgroundColor: kbg1black500,
-        centerTitle: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/svgicon/logo.svg',
-              width: 33,
-              height: 30,
-            ),
-            const SizedBox(width: 9),
-            Image.asset(
-              'assets/images/FileDock.png',
-              width: 136,
-              height: 36,
-            ),
-          ],
-        ),
+        toolbarHeight: 1,
       ),
       body: Container(
         decoration: BoxDecoration(

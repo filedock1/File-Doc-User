@@ -91,21 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: kblack,
       appBar: AppBar(
+        toolbarHeight: 1,
         backgroundColor: kbg1black500,
-        title: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                'assets/svgicon/logo.svg',
-                width: 33,
-                height: 30,
-              ),
-              const SizedBox(width: 9),
-              Image.asset('assets/images/FileDock.png', width: 136, height: 36),
-            ],
-          ),
-        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -124,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: [
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -148,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -216,20 +203,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         subtitle:
                             'Seamlessly adjusts video resolution between 480p, 720p, and 1080p',
                       ),
-                      const SizedBox(height: 10),
-
+                      const SizedBox(height: 5),
                       HomeTitleSubTitle(
                         svgAssetPath: 'assets/svgicon/flag-02.svg',
                         title: 'Issue Reporting',
                         subtitle:
                             'Easily report any video or playback issues directly from the app',
                       ),
-                      const Spacer(),
-                      NativeVideoAdCard(
-                        adKey: 'videoscreenNative2',
-                        onAdLoaded: _onAdProcessed,
-                      ),
                       const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: NativeVideoAdCard(
+                          adKey: 'videoscreenNative2',
+                          onAdLoaded: _onAdProcessed,
+                        ),
+                      ),
                       const SizedBox(height: 10),
                     ],
                   ),
