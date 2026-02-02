@@ -97,158 +97,154 @@ class _VideoScreenState extends State<VideoScreen> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: kbg1black500,
-          image: const DecorationImage(
-            image: AssetImage('assets/images/dottedimg.jpg'),
-            fit: BoxFit.cover,
-            opacity: 0.15,
-          ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-
-                  NativeVideoAdCard(
+            padding: const EdgeInsets.all(1),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: NativeVideoAdCard(
                     adKey: 'videoscreenNative1',
                     onAdLoaded: _onAdProcessed,
                   ),
-                  const SizedBox(height: 20),
-                  if (!_isButtonVisible)
-                    Container(
-                      height: 44,
-                      width: 179,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        "Please wait...",
-                        style:
-                            TextStyle(color: Colors.white54, fontSize: 14),
-                      ),
-                    )
-                  else
-                    BouncingButton(
-                      onTap: () {
-                        if (_isLoading || _isCountdown) return;
+                ),
+                const SizedBox(height: 20),
+                if (!_isButtonVisible)
+                  Container(
+                    height: 44,
+                    width: 179,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Please wait...",
+                      style:
+                          TextStyle(color: Colors.white54, fontSize: 14),
+                    ),
+                  )
+                else
+                  BouncingButton(
+                    onTap: () {
+                      if (_isLoading || _isCountdown) return;
 
-                        if (videoController.videoUrl.value.isEmpty ||
-                            videoController.videoId.value.isEmpty) {
-                          Get.snackbar(
-                              "Error", "No video available to play");
-                          return;
+                      if (videoController.videoUrl.value.isEmpty ||
+                          videoController.videoId.value.isEmpty) {
+                        Get.snackbar(
+                            "Error", "No video available to play");
+                        return;
+                      }
+
+                      setState(() => _isLoading = true);
+
+                      PlayCounter.increment();
+
+                      final VideoModel model = VideoModel(
+                        id: videoController.videoId.value,
+                        url: videoController.videoUrl.value,
+                        localPath: null,
+                        title: videoController.videoTitle.value,
+                        views: videoController.videoViews.value,
+                        clickCount:
+                            videoController.videoClickCount.value,
+                        size: videoController.videoSize.value,
+                        date: videoController.videoDate.value,
+                      );
+
+                      void openPlayer() {
+                        setState(() => _isLoading = false);
+                        Get.to(() =>
+                            VideoPlayerScreen(videoModel: model));
+                      }
+
+                      _startCountdown(() {
+                        if (PlayCounter.playCount == 1 ||
+                            PlayCounter.playCount % 5 == 0) {
+                          RewardedInterstitialAdManager().showAd(
+                            adUnitId:
+                                AdManager.rewardedInterstitialAdUnitIds[
+                                    'unlockFullVideo']!,
+                            onComplete: (earned) {
+                              if (earned) {
+                                openPlayer();
+                              } else {
+                                setState(() => _isLoading = false);
+                                Get.snackbar("Locked",
+                                    "Watch the ad to play the video.");
+                              }
+                            },
+                          );
+                        } else {
+                          openPlayer();
                         }
-
-                        setState(() => _isLoading = true);
-
-                        PlayCounter.increment();
-
-                        final VideoModel model = VideoModel(
-                          id: videoController.videoId.value,
-                          url: videoController.videoUrl.value,
-                          localPath: null,
-                          title: videoController.videoTitle.value,
-                          views: videoController.videoViews.value,
-                          clickCount:
-                              videoController.videoClickCount.value,
-                          size: videoController.videoSize.value,
-                          date: videoController.videoDate.value,
-                        );
-
-                        void openPlayer() {
-                          setState(() => _isLoading = false);
-                          Get.to(() =>
-                              VideoPlayerScreen(videoModel: model));
-                        }
-
-                        // ⏳ FIRST countdown → THEN ad → THEN player
-                        _startCountdown(() {
-                          if (PlayCounter.playCount == 1 ||
-                              PlayCounter.playCount % 5 == 0) {
-                            RewardedInterstitialAdManager().showAd(
-                              adUnitId:
-                                  AdManager.rewardedInterstitialAdUnitIds[
-                                      'unlockFullVideo']!,
-                              onComplete: (earned) {
-                                if (earned) {
-                                  openPlayer();
-                                } else {
-                                  setState(() => _isLoading = false);
-                                  Get.snackbar("Locked",
-                                      "Watch the ad to play the video.");
-                                }
-                              },
-                            );
-                          } else {
-                            openPlayer();
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: 49,
-                        width: 189,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(
-                            color: kblueaccent,
-                            width: 3.4,
-                          ),
+                      });
+                    },
+                    child: Container(
+                      height: 49,
+                      width: 189,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: kblueaccent,
+                          width: 3.4,
                         ),
-                        child: _isLoading
-                            ? const Center(
-                                child: SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2.5,
-                                  ),
+                      ),
+                      child: _isLoading
+                          ? const Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
                                 ),
-                              )
-                            : _isCountdown
-                                ? Center(
-                                    child: Text(
-                                      "Starting in $_countdown...",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : _isCountdown
+                              ? Center(
+                                  child: Text(
+                                    "Starting in $_countdown...",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.all(8),
+                                      child: SvgPicture.asset(
+                                        'assets/svgicon/Polygon 2.svg',
+                                        width: 40,
+                                        height: 40,
                                       ),
                                     ),
-                                  )
-                                : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.all(8),
-                                        child: SvgPicture.asset(
-                                          'assets/svgicon/Polygon 2.svg',
-                                          width: 40,
-                                          height: 40,
-                                        ),
+                                    Text(
+                                      'Play Video',
+                                      style: TextStyle(
+                                        color: kwhite,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      Text(
-                                        'Play Video',
-                                        style: TextStyle(
-                                          color: kwhite,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                      ),
+                                    ),
+                                  ],
+                                ),
                     ),
+                  ),
 
-                  const SizedBox(height: 20),
-
-                  NativeVideoAdCard(
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
+                  child: NativeVideoAdCard(
                     adKey: 'videoscreenNative2',
                     onAdLoaded: _onAdProcessed,
                   ),
-                  const SizedBox(height: 10),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

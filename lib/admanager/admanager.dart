@@ -11,11 +11,10 @@ class AdManager {
   static Map<String, String> rewardedInterstitialAdUnitIds = {}; // ⭐ NEW
 
   /// 🛠️ TOGGLE THIS FOR TESTING VS PRODUCTION
-  static const bool isTestMode = true;
+  static const bool isTestMode = false;
 
   /// 🧪 Standard Test IDs (Google AdMob)
   static final Map<String, String> _testAdUnitIds = {
-    // Banner
     "home_banner1": "ca-app-pub-3940256099942544/6300978111",
     "home_banner2": "ca-app-pub-3940256099942544/6300978111",
     "videoplayerscreen_banner1": "ca-app-pub-3940256099942544/6300978111",
@@ -26,17 +25,15 @@ class AdManager {
     "downloadscreen_banner2": "ca-app-pub-3940256099942544/6300978111",
     "morescreen_banner1": "ca-app-pub-3940256099942544/6300978111",
     "morescreen_banner2": "ca-app-pub-3940256099942544/6300978111",
-
+    "videoscreenNative": "ca-app-pub-3940256099942544/1044960115",
     "videoscreenNative1": "ca-app-pub-3940256099942544/1044960115",
     "videoscreenNative2": "ca-app-pub-3940256099942544/1044960115",
-    "videoplayerscreenNative": "ca-app-pub-3940256099942544/1044960115", // ✅ Image Advanced for now
+    "videoplayerscreenNative": "ca-app-pub-3940256099942544/1044960115",
 
-    // Interstitial
     "downloadAd": "ca-app-pub-3940256099942544/1033173712",
     "goToFullScreen": "ca-app-pub-3940256099942544/1033173712",
     "playButtonAd": "ca-app-pub-3940256099942544/1033173712",
 
-    // Rewarded Interstitial (Actually using Standard Rewarded in code)
     "videoDownloadReward": "ca-app-pub-3940256099942544/5224354917", // Was ...5354046379
     "unlockFullVideo": "ca-app-pub-3940256099942544/5224354917",     // Was ...5354046379
   };
@@ -54,16 +51,17 @@ class AdManager {
     "videoplayerscreen_banner2": "ca-app-pub-6783189810116421/6250931152",
     "videoscreen_banner1": "ca-app-pub-6783189810116421/6250931152",
     "videoscreen_banner2": "ca-app-pub-6783189810116421/6250931152",
-    "downloadscreen_banner1": "ca-app-pub-6783189810116421/6250931152",
-    "downloadscreen_banner2": "ca-app-pub-6783189810116421/6250931152",
-    "morescreen_banner1": "ca-app-pub-6783189810116421/6250931152",
-    "morescreen_banner2": "ca-app-pub-6783189810116421/6250931152"
+    "downloadscreen_banner1": "ca-app-pub-2091017524613192/7009580998",
+    "downloadscreen_banner2": "ca-app-pub-2091017524613192/7009580998",
+    "morescreen_banner1": "ca-app-pub-2091017524613192/8938079649",
+    "morescreen_banner2": "ca-app-pub-2091017524613192/7671925971"
   },
 
   "native_video": {
-    "videoscreenNative1": "ca-app-pub-6783189810116421/9600552567",
-    "videoscreenNative2": "ca-app-pub-6783189810116421/9600552567",
-    "videoplayerscreenNative": "ca-app-pub-6783189810116421/9600552567"
+    "videoscreenNative1": "ca-app-pub-2091017524613192/1981789058",
+    "videoscreenNative":"ca-app-pub-2091017524613192/8530885534",
+    "videoscreenNative2": "ca-app-pub-2091017524613192/3517457926",
+    "videoplayerscreenNative": "ca-app-pub-2091017524613192/2204376253"
   },
 
   "interstitial": {

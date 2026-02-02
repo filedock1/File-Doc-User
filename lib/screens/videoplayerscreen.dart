@@ -221,23 +221,11 @@ void _showVideoAdBeforePlay() {
           icon: Icon(Icons.arrow_back_ios, color: kwhite),
           onPressed: () => Get.back(),
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/svgicon/logo.svg', width: 30),
-            const SizedBox(width: 8),
-            Image.asset('assets/images/FileDock.png', width: 130),
-          ],
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-             SizedBox(height: 10),
-            CustomBannerAd(bannerKey: 'videoplayerscreen_banner1'),
-            const SizedBox(height: 12),
-
-            /// 🎥 VIDEO PLAYER
+             SizedBox(height: 10), const SizedBox(height: 12),
             CustomVideoPlayer(
               videoModel: video,
               videoPath: playPath,
@@ -332,7 +320,10 @@ void _showVideoAdBeforePlay() {
             ),
 
             const SizedBox(height: 14),
-            NativeVideoAdCard(adKey: "videoplayerscreenNative"),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: NativeVideoAdCard(adKey: "videoplayerscreenNative"),
+            ),
             const SizedBox(height: 14),
           ],
         ),

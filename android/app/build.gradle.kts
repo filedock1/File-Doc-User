@@ -42,8 +42,8 @@ android {
         applicationId = "com.ignito.filedockuser"
         minSdk = flutterMinSdkVersion
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.9"
+        versionCode = 10
+        versionName = "1.99"
 
         manifestPlaceholders.putAll(
             mapOf(

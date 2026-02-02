@@ -15,26 +15,19 @@ class NativeAdController extends GetxController {
     final adUnitId = AdManager.nativeVideoAdUnitIds[adKey];
 
     if (adUnitId == null) {
-      debugPrint("❌ NativeAd key '$adKey' not found!");
       isError.value = true;
       return;
     }
 
-    // Reset state
+    _nativeAd?.dispose();
     isLoaded.value = false;
     isError.value = false;
-    _retryCount = 0;
-
-    _nativeAd?.dispose();
-    final String safeAdUnitId = kReleaseMode
-        ? "ca-app-pub-2091017524613192/7697381673"
-        : "ca-app-pub-3940256099942544/2247696110";
 
     _nativeAd = NativeAd(
-      adUnitId: safeAdUnitId,
+      adUnitId: adUnitId,
       factoryId: 'listTile',
       nativeAdOptions: NativeAdOptions(
-        mediaAspectRatio: MediaAspectRatio.landscape,
+        mediaAspectRatio: MediaAspectRatio.any, // 🔥 KEY FIX
         videoOptions: VideoOptions(
           startMuted: true,
           clickToExpandRequested: true,
@@ -43,29 +36,15 @@ class NativeAdController extends GetxController {
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (ad) {
-          debugPrint("✅ Native Ad Loaded: $adKey");
+          debugPrint("✅ Native VIDEO loaded: $adKey");
           isLoaded.value = true;
-          isError.value = false;
-          _retryCount = 0;
         },
         onAdFailedToLoad: (ad, error) {
-          debugPrint("❌ Native Ad Failed to load ($adKey): $error");
           ad.dispose();
-          isLoaded.value = false;
-
-          if (_retryCount < _maxRetries) {
-            _retryCount++;
-            debugPrint("🔄 Retrying Native Ad ($adKey)... Attempt: $_retryCount");
-            Future.delayed(const Duration(seconds: 3), () {
-              loadNativeAd(adKey);
-            });
-          } else {
-            isError.value = true;
-          }
+          isError.value = true;
         },
       ),
     )..load();
-
   }
 
   NativeAd? get nativeAd => _nativeAd;

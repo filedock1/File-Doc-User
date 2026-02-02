@@ -30,11 +30,11 @@ Future<void> _openLink(String url) async {
       body: Container(
         decoration: BoxDecoration(
           color: kbg1black500,
-          image: const DecorationImage(
+          /*image: const DecorationImage(
             image: AssetImage('assets/images/dottedimg.jpg'),
             fit: BoxFit.cover,
             opacity: 0.15,
-          ),
+          ),*/
         ),
         child: SafeArea(
           child: Padding(

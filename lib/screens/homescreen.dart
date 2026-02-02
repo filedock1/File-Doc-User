@@ -97,11 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         decoration: BoxDecoration(
           color: kbg1black500,
-          image: DecorationImage(
-            image: AssetImage('assets/images/dottedimg.jpg'),
-            fit: BoxFit.cover,
-            opacity: 0.15,
-          ),
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -136,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(height: 5),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -157,11 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-
-                      /// 🔹 TextField with loader
-                      /// 🔹 TextField with loader + deep link logic
                       Obx(() {
-                        // 1️⃣ Loading
                         if (controller.isLoading.value) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -173,12 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
 
-                        // 2️⃣ Deep link user → hide input box
-                        if (videoController.videoId.value.isNotEmpty) {
-                          return const SizedBox.shrink();
-                        }
-
-                        // 3️⃣ Normal user → show input box
                         return FileDockTextField(
                           linkController: controller.linkController,
                           onTap: () {
@@ -194,14 +178,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         );
                       }),
-
                       const SizedBox(height: 10),
-
                       HomeTitleSubTitle(
                         svgAssetPath: 'assets/svgicon/video-ai.svg',
                         title: 'Adaptive Video Quality',
-                        subtitle:
-                            'Seamlessly adjusts video resolution between 480p, 720p, and 1080p',
+                        subtitle: 'Seamlessly adjusts video resolution between 480p, 720p, and 1080p',
                       ),
                       const SizedBox(height: 5),
                       HomeTitleSubTitle(
@@ -212,9 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: NativeVideoAdCard(
-                          adKey: 'videoscreenNative2',
+                          adKey: 'videoscreenNative',
                           onAdLoaded: _onAdProcessed,
                         ),
                       ),

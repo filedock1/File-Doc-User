@@ -33,8 +33,6 @@ class _NativeAdBoxState extends State<NativeAdBox> {
         },
       ),
     );
-
-
     _ad!.load();
   }
 

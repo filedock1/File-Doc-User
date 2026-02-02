@@ -36,7 +36,7 @@ class BannerAdController extends GetxController {
     _bannerAds[bannerKey]?.dispose();
 
     final banner = BannerAd(
-      adUnitId: "ca-app-pub-2091017524613192/7904491152",
+      adUnitId: adUnitId,
       size: adSize, 
       request: const AdRequest(),
       listener: BannerAdListener(

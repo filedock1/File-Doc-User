@@ -82,10 +82,9 @@ class _NativeVideoAdCardState extends State<NativeVideoAdCard> {
           ),
         );
       }
-
-      // 🔹 Show real native ad once loaded
       return SizedBox(
         height: widget.height,
+        width: double.infinity,
         child: AdWidget(ad: adController.nativeAd!),
       );
     });

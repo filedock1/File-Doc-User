@@ -78,16 +78,12 @@ Future<void> main() async {
   
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   
-   MobileAds.instance.initialize();
+  await MobileAds.instance.initialize();
 
   await AdManager.fetchRemoteConfig();
 
   Get.put(VideoController());
-  MobileAds.instance.updateRequestConfiguration(
-    RequestConfiguration(
-      testDeviceIds: ["B13AF4D0C186E428120F046F167286B1"],
-    ),
-  );
+
   await initDeepLinks();
 
   runApp(const MyApp());
