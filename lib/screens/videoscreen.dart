@@ -37,9 +37,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Fallback: show button after 8 sec if ads hang
-    Future.delayed(const Duration(seconds: 8), () {
+    Future.delayed(const Duration(seconds: 4), () {
       if (mounted && !_isButtonVisible) {
         setState(() => _isButtonVisible = true);
       }
@@ -107,7 +105,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: NativeVideoAdCard(
-                    adKey: 'videoscreenNative1',
+                    adKey: 'videoscreenNative2',
                     onAdLoaded: _onAdProcessed,
                   ),
                 ),
@@ -158,19 +156,14 @@ class _VideoScreenState extends State<VideoScreen> {
                       }
 
                       _startCountdown(() {
-                        if (PlayCounter.playCount == 1 ||
-                            PlayCounter.playCount % 5 == 0) {
+                        if ( PlayCounter.playCount % 2 == 1) {
                           RewardedInterstitialAdManager().showAd(
-                            adUnitId:
-                                AdManager.rewardedInterstitialAdUnitIds[
-                                    'unlockFullVideo']!,
+                            adUnitId:"ca-app-pub-2091017524613192/4962456755",
                             onComplete: (earned) {
                               if (earned) {
                                 openPlayer();
                               } else {
                                 setState(() => _isLoading = false);
-                                Get.snackbar("Locked",
-                                    "Watch the ad to play the video.");
                               }
                             },
                           );
@@ -240,7 +233,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
                   child: NativeVideoAdCard(
-                    adKey: 'videoscreenNative2',
+                    adKey: 'videoscreenNative1',
                     onAdLoaded: _onAdProcessed,
                   ),
                 ),

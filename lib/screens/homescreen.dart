@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: NativeVideoAdCard(
-                          adKey: 'videoscreenNative',
+                          adKey: 'videoscreenNative1',
                           onAdLoaded: _onAdProcessed,
                         ),
                       ),

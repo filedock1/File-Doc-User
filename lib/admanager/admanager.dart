@@ -25,7 +25,7 @@ class AdManager {
     "downloadscreen_banner2": "ca-app-pub-3940256099942544/6300978111",
     "morescreen_banner1": "ca-app-pub-3940256099942544/6300978111",
     "morescreen_banner2": "ca-app-pub-3940256099942544/6300978111",
-    "videoscreenNative": "ca-app-pub-3940256099942544/1044960115",
+    "videoscreenNative3": "ca-app-pub-3940256099942544/1044960115",
     "videoscreenNative1": "ca-app-pub-3940256099942544/1044960115",
     "videoscreenNative2": "ca-app-pub-3940256099942544/1044960115",
     "videoplayerscreenNative": "ca-app-pub-3940256099942544/1044960115",
@@ -59,7 +59,7 @@ class AdManager {
 
   "native_video": {
     "videoscreenNative1": "ca-app-pub-2091017524613192/1981789058",
-    "videoscreenNative":"ca-app-pub-2091017524613192/8530885534",
+    "videoscreenNative3":"ca-app-pub-2091017524613192/8530885534",
     "videoscreenNative2": "ca-app-pub-2091017524613192/3517457926",
     "videoplayerscreenNative": "ca-app-pub-2091017524613192/2204376253"
   },
@@ -106,6 +106,8 @@ class AdManager {
         });
 
       } else {
+        debugPrint('🧪 TEST MODE INACTIVE: Using Real Ad Unit IDs');
+
         final jsonString = remoteConfig.getString('all_ads');
         final Map<String, dynamic> data = json.decode(jsonString);
 

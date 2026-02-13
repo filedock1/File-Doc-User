@@ -13,6 +13,8 @@ class NativeAdController extends GetxController {
 
   void loadNativeAd(String adKey) {
     final adUnitId = AdManager.nativeVideoAdUnitIds[adKey];
+    debugPrint("Loading native ad for key: $adKey");
+    debugPrint("Ad unit found: $adUnitId");
 
     if (adUnitId == null) {
       isError.value = true;
@@ -20,14 +22,18 @@ class NativeAdController extends GetxController {
     }
 
     _nativeAd?.dispose();
-    isLoaded.value = false;
-    isError.value = false;
+
+    // 🔥 Prevent state change during build
+    Future.microtask(() {
+      isLoaded.value = false;
+      isError.value = false;
+    });
 
     _nativeAd = NativeAd(
       adUnitId: adUnitId,
       factoryId: 'listTile',
       nativeAdOptions: NativeAdOptions(
-        mediaAspectRatio: MediaAspectRatio.any, // 🔥 KEY FIX
+        mediaAspectRatio: MediaAspectRatio.any,
         videoOptions: VideoOptions(
           startMuted: true,
           clickToExpandRequested: true,

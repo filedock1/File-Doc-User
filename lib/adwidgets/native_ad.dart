@@ -27,10 +27,14 @@ class _NativeVideoAdCardState extends State<NativeVideoAdCard> {
   @override
   void initState() {
     super.initState();
-    // Unique controller for this specific adKey
     adController = Get.put(NativeAdController(), tag: widget.adKey);
-    adController.loadNativeAd(widget.adKey);
+
+    // 🔥 FIX: delay load to next microtask
+    Future.microtask(() {
+      adController.loadNativeAd(widget.adKey);
+    });
   }
+
 
   // Optional: Dispose/Delete controller when widget is removed?
   // Since we used permanent: false (default), it might be auto-deleted if no one listens?

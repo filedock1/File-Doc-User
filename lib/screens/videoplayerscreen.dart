@@ -70,8 +70,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   // ---------------- VIDEO AD ----------------
-
-void _showVideoAdBeforePlay() {
+  void _showVideoAdBeforePlay() {
   final adId =
       AdManager.rewardedInterstitialAdUnitIds['unlockFullVideo'];
 
@@ -105,8 +104,7 @@ void _showVideoAdBeforePlay() {
 
     setState(() => _isAdLoading = true); // ⏳ Start loading
 
-    final adId =
-        AdManager.rewardedInterstitialAdUnitIds['videoDownloadReward'];
+    final adId ="ca-app-pub-2091017524613192/6448936735";
 
     if (adId == null || adId.isEmpty) {
       downloadController.startDownload(video);
@@ -322,7 +320,7 @@ void _showVideoAdBeforePlay() {
             const SizedBox(height: 14),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: NativeVideoAdCard(adKey: "videoplayerscreenNative"),
+              child: NativeVideoAdCard(adKey: "videoscreenNative2"),
             ),
             const SizedBox(height: 14),
           ],
@@ -383,20 +381,15 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   @override
   void initState() {
     super.initState();
-      // 🔥 KEEP SCREEN ON WHILE VIDEO IS PLAYING
     WakelockPlus.enable();
 
     final path = widget.videoPath.trim();
-    debugPrint("🎬 VideoPlayer Init: path=$path"); 
+    debugPrint("🎬 VideoPlayer Init: path=$path");
 
-    // 🔥 DELAY to allow Ad resources to clear
-    Future.delayed(const Duration(milliseconds: 7000), () {
-      if (!mounted) return;
-      _initializeVideo();
-    });
-    
+    _initializeVideo(); // direct start
     _startHideTimer();
   }
+
 
   void _initializeVideo() {
     debugPrint("🎬 VideoPlayer Attempting Init...");
@@ -459,7 +452,6 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   // _toggleFullScreen, _isFullScreen REMOVED. Use widget.onFullScreenToggle and widget.isFullScreen
 
-  @override
   @override
   void dispose() {
     WakelockPlus.disable();
