@@ -45,8 +45,8 @@ class _NativeVideoAdCardState extends State<NativeVideoAdCard> {
   
   @override
   void dispose() {
-    // Determine if we should delete the controller to free resources
-    // Get.delete<NativeAdController>(tag: widget.adKey);
+    // Delete the controller to free resources and dispose the ad properly to prevent invalid background traffic
+    Get.delete<NativeAdController>(tag: widget.adKey);
     super.dispose();
   }
 

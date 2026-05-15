@@ -70,6 +70,13 @@ class BannerAdController extends GetxController {
   /// Get banner instance for AdWidget
   BannerAd? getBanner(String bannerKey) => _bannerAds[bannerKey];
 
+  /// Dispose a specific banner ad
+  void disposeBannerAd(String bannerKey) {
+    _bannerAds[bannerKey]?.dispose();
+    _bannerAds.remove(bannerKey);
+    _isLoaded[bannerKey]?.value = false;
+  }
+
   /// Reactive loaded state
   RxBool isBannerLoaded(String bannerKey) {
     return _isLoaded.putIfAbsent(bannerKey, () => false.obs);

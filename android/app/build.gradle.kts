@@ -27,7 +27,7 @@ val flutterMinSdkVersion =
 android {
     namespace = "com.ignito.filedockuser"
     compileSdk = 36   // ✅ required by latest plugins
-    ndkVersion = "28.2.13676358"
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -42,15 +42,14 @@ android {
         applicationId = "com.ignito.filedockuser"
         minSdk = flutterMinSdkVersion
         targetSdk = 36
-        versionCode = 12
-        versionName = "2.0"
+        versionCode = 19
+        versionName = "2.2.4.5"
 
         manifestPlaceholders.putAll(
             mapOf(
                 "permissionHandlerPermissionGroups" to "storage,photos,videos"
             )
         )
-
     }
 
     signingConfigs {
@@ -81,8 +80,14 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.android.gms:play-services-ads:23.4.0")
+
+    implementation("com.google.android.gms:play-services-ads:24.2.0")
+
+    implementation("com.google.ads.mediation:facebook:6.20.0.1")
+
+    implementation("com.google.ads.mediation:unity:4.16.0.0")
 }
 
 

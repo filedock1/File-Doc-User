@@ -15,6 +15,7 @@ import 'package:flutter/services.dart'; // ✅ For explicit orientation control
 import '../admanager/admanager.dart';
 import '../adwidgets/bannerad.dart';
 import '../adwidgets/native_ad.dart';
+import '../adwidgets/rewarded.dart';
 import '../adwidgets/rewardedad.dart';
 import '../constant/colors.dart';
 import '../controllers/videocontroller.dart';
@@ -91,46 +92,38 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   );
 }
 
-
-
-  // ---------------- DOWNLOAD ----------------
-
-  // ---------------- DOWNLOAD ----------------
-  
-  // ❌ _startDownload REMOVED (Moved to Controller)
-
   Future<void> _downloadWithAd(VideoModel video) async {
-    if (_isAdLoading) return; // 🔒 Prevent double clicks
+    if (_isAdLoading) return;
 
-    setState(() => _isAdLoading = true); // ⏳ Start loading
+    setState(() => _isAdLoading = true);
 
-    final adId ="ca-app-pub-2091017524613192/6448936735";
+    final adId = "ca-app-pub-2091017524613192/4962456755";
 
-    if (adId == null || adId.isEmpty) {
+    if (adId.isEmpty) {
       downloadController.startDownload(video);
       if (mounted) setState(() => _isAdLoading = false);
       return;
     }
 
-    // 🔥 DEBUG: Log Ad ID
-    debugPrint("🎬 Ad Request ID: $adId");
+    debugPrint("🎬 Rewarded Ad Request ID: $adId");
 
-    RewardedInterstitialAdManager().showAd(
+    RewardedAdManager().showAd(
       adUnitId: adId,
-      onComplete: (bool earned) {
-        if (mounted) setState(() => _isAdLoading = false); // 🔓 Stop loading
-        debugPrint("🎬 Ad Completion Callback: earned=$earned");
-        
-        // 🔥 DEBUG: ALLOW DOWNLOAD ANYWAY (To fix user issue)
-        if (earned) {
-          debugPrint("✅ Reward Earned. Starting Download...");
-          downloadController.startDownload(video); 
-        } else {
-          debugPrint("⚠️ Ad Skipped. Download Allowed for Debug.");
-          Get.snackbar("Debug", "Ad Skipped but Download Started");
-          downloadController.startDownload(video); // 🔥 FORCE START
+        onComplete: (bool earned) {
+          if (!mounted) return;
+
+          setState(() => _isAdLoading = false);
+
+          if (earned) {
+            downloadController.startDownload(video);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Watch full ad to download"),
+              ),
+            );
+          }
         }
-      },
     );
   }
 
