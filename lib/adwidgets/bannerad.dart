@@ -33,6 +33,13 @@ class _CustomBannerAdState extends State<CustomBannerAd> {
   }
 
   @override
+  void dispose() {
+    // Free the ad resource to prevent invalid background impressions
+    adController.disposeBannerAd(widget.bannerKey);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       final isError = adController.isBannerError(widget.bannerKey).value;
