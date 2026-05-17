@@ -8,16 +8,18 @@ class NativeAdController extends GetxController {
   NativeAd? _nativeAd;
   final RxBool isLoaded = false.obs;
   final RxBool isError = false.obs;
+  final RxString errorMessage = "".obs;
   int _retryCount = 0;
   final int _maxRetries = 3;
 
   void loadNativeAd(String adKey) {
-    final adUnitId = AdManager.nativeVideoAdUnitIds[adKey];
+    final adUnitId = AdManager.nativeAdUnitIds[adKey];
     debugPrint("Loading native ad for key: $adKey");
     debugPrint("Ad unit found: $adUnitId");
 
     if (adUnitId == null) {
       isError.value = true;
+      errorMessage.value = "Ad ID not found";
       return;
     }
 
@@ -27,6 +29,7 @@ class NativeAdController extends GetxController {
     Future.microtask(() {
       isLoaded.value = false;
       isError.value = false;
+      errorMessage.value = "";
     });
 
     _nativeAd = NativeAd(
@@ -48,6 +51,7 @@ class NativeAdController extends GetxController {
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
           isError.value = true;
+          errorMessage.value = error.message;
         },
       ),
     )..load();

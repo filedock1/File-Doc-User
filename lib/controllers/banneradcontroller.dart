@@ -8,6 +8,7 @@ class BannerAdController extends GetxController {
   final Map<String, BannerAd?> _bannerAds = {};
   final Map<String, RxBool> _isLoaded = {};
   final Map<String, RxBool> _isError = {}; // 🔥 Track errors
+  final Map<String, RxString> _errorMessage = {}; // 🔥 Track error messages
   final Map<String, int> _retryCount = {};
 
   final int _maxRetries = 3;
@@ -18,6 +19,8 @@ class BannerAdController extends GetxController {
 
     if (adUnitId == null) {
       print("❌ Banner key '$bannerKey' not found!");
+      _isError.putIfAbsent(bannerKey, () => false.obs).value = true;
+      _errorMessage.putIfAbsent(bannerKey, () => "".obs).value = "Ad ID not found";
       return;
     }
 
@@ -25,10 +28,12 @@ class BannerAdController extends GetxController {
        WidgetsBinding.instance.addPostFrameCallback((_) {
          _isLoaded[bannerKey]!.value = false;
          _isError[bannerKey]!.value = false;
+         _errorMessage[bannerKey]?.value = "";
        });
     } else {
       _isLoaded[bannerKey] = false.obs;
       _isError[bannerKey] = false.obs;
+      _errorMessage[bannerKey] = "".obs;
     }
     
     _retryCount.putIfAbsent(bannerKey, () => 0);
@@ -58,6 +63,7 @@ class BannerAdController extends GetxController {
           } else {
              // Retries exhausted, hide UI
              _isError[bannerKey]?.value = true;
+             _errorMessage[bannerKey]?.value = error.message;
           }
         },
       ),
@@ -85,6 +91,11 @@ class BannerAdController extends GetxController {
   /// Reactive error state
   RxBool isBannerError(String bannerKey) {
     return _isError.putIfAbsent(bannerKey, () => false.obs);
+  }
+
+  /// Reactive error message
+  RxString getErrorMessage(String bannerKey) {
+    return _errorMessage.putIfAbsent(bannerKey, () => "".obs);
   }
 
   @override

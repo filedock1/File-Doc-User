@@ -82,6 +82,12 @@ Future<void> main() async {
 
   await AdManager.fetchRemoteConfig();
 
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      testDeviceIds: ['F886D4644603FFC31C4919FE232495C3'],
+    ),
+  );
+
   Get.put(VideoController());
 
   await initDeepLinks();

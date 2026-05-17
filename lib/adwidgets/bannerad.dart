@@ -55,9 +55,37 @@ class _CustomBannerAdState extends State<CustomBannerAd> {
         }
       }
 
-      // 🔹 Hide if error (No fill / Failed)
+      // 🔹 Show fallback if error (No fill / Failed)
       if (isError) {
-        return const SizedBox.shrink();
+        final errorMsg = adController.getErrorMessage(widget.bannerKey).value;
+        return Container(
+          width: AdSize.banner.width.toDouble(),
+          height: AdSize.banner.height.toDouble(),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade900,
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            border: Border.all(color: Colors.grey.shade800),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.ad_units, color: Colors.grey, size: 20),
+                  const SizedBox(height: 4),
+                  Text(
+                    errorMsg.isNotEmpty ? errorMsg : "Ad unavailable",
+                    style: const TextStyle(color: Colors.grey, fontSize: 10),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       }
 
       if (!isLoaded) {

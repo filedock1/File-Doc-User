@@ -6,9 +6,10 @@ import 'package:flutter/cupertino.dart';
 class AdManager {
   // Ad unit maps
   static Map<String, String> bannerAdUnitIds = {};
-  static Map<String, String> nativeVideoAdUnitIds = {};
+  static Map<String, String> nativeAdUnitIds = {}; // Changed from nativeVideoAdUnitIds to match JSON
   static Map<String, String> interstitialAdUnitIds = {};
-  static Map<String, String> rewardedInterstitialAdUnitIds = {}; // ⭐ NEW
+  static Map<String, String> rewardedAdUnitIds = {}; // ⭐ NEW
+  static Map<String, String> rewardedInterstitialAdUnitIds = {};
 
   /// 🛠️ TOGGLE THIS FOR TESTING VS PRODUCTION
   static const bool isTestMode = false;
@@ -34,8 +35,11 @@ class AdManager {
     "goToFullScreen": "ca-app-pub-3940256099942544/1033173712",
     "playButtonAd": "ca-app-pub-3940256099942544/1033173712",
 
-    "videoDownloadReward": "ca-app-pub-3940256099942544/5224354917", // Was ...5354046379
-    "unlockFullVideo": "ca-app-pub-3940256099942544/5224354917",     // Was ...5354046379
+    "rewarded_download": "ca-app-pub-3940256099942544/5224354917",
+    "downlaod_button_ad": "ca-app-pub-3940256099942544/5224354917",
+
+    "videoDownloadReward": "ca-app-pub-3940256099942544/5354046379",
+    "unlockFullVideo": "ca-app-pub-3940256099942544/5354046379",
   };
 
   /// Fetch ad unit IDs from Remote Config (JSON)
@@ -45,61 +49,79 @@ class AdManager {
     const defaultJson = '''
 {
   "banner": {
-    "home_banner1": "ca-app-pub-6783189810116421/6250931152",
-    "home_banner2": "ca-app-pub-6783189810116421/6250931152",
-    "videoplayerscreen_banner1": "ca-app-pub-6783189810116421/6250931152",
-    "videoplayerscreen_banner2": "ca-app-pub-6783189810116421/6250931152",
-    "videoscreen_banner1": "ca-app-pub-6783189810116421/6250931152",
-    "videoscreen_banner2": "ca-app-pub-6783189810116421/6250931152",
-    "downloadscreen_banner1": "ca-app-pub-2091017524613192/7009580998",
-    "downloadscreen_banner2": "ca-app-pub-2091017524613192/7009580998",
-    "morescreen_banner1": "ca-app-pub-2091017524613192/8938079649",
-    "morescreen_banner2": "ca-app-pub-2091017524613192/7671925971"
+    "home_banner": "ca-app-pub-2091017524613192/2942701605",
+    "videos_banner": "ca-app-pub-2091017524613192/8987418512",
+    "player_banner": "ca-app-pub-2091017524613192/9106838014",
+    "download_banner": "ca-app-pub-2091017524613192/6859948628",
+    "more_banner": "ca-app-pub-2091017524613192/3820669009",
+    "home_banner1": "ca-app-pub-2091017524613192/8812704874",
+    "home_banner2": "ca-app-pub-2091017524613192/8812704874",
+    "videoplayerscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
+    "videoplayerscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
+    "videoscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
+    "videoscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
+    "downloadscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
+    "downloadscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
+    "morescreen_banner1": "ca-app-pub-2091017524613192/8812704874",
+    "morescreen_banner2": "ca-app-pub-2091017524613192/8812704874"
   },
-
-  "native_video": {
-    "videoscreenNative1": "ca-app-pub-2091017524613192/1981789058",
-    "videoscreenNative3":"ca-app-pub-2091017524613192/8530885534",
-    "videoscreenNative2": "ca-app-pub-2091017524613192/3517457926",
-    "videoplayerscreenNative": "ca-app-pub-2091017524613192/2204376253"
+  "native": {
+    "home_native": "ca-app-pub-2091017524613192/1194505660",
+    "videos_native": "ca-app-pub-2091017524613192/5546866954",
+    "player_native": "ca-app-pub-2091017524613192/6255260652",
+    "videoscreenNative1": "ca-app-pub-2091017524613192/8829958694",
+    "videoscreenNative2": "ca-app-pub-2091017524613192/8829958694",
+    "videoscreenNative3": "ca-app-pub-2091017524613192/8829958694",
+    "videoplayerscreenNative": "ca-app-pub-2091017524613192/8829958694"
   },
-
   "interstitial": {
-    "downloadAd": "ca-app-pub-6783189810116421/7528922999",
-    "goToFullScreen": "ca-app-pub-6783189810116421/7528922999",
-    "playButtonAd": "ca-app-pub-6783189810116421/7528922999"
+    "fullscreen_interstitial": "ca-app-pub-2091017524613192/8689852303",
+    "action_interstitial": "ca-app-pub-2091017524613192/9982752673",
+    "downloadAd": "ca-app-pub-2091017524613192/5158028067",
+    "goToFullScreen": "ca-app-pub-2091017524613192/5158028067",
+    "playButtonAd": "ca-app-pub-2091017524613192/5158028067"
   },
-
+  "rewarded": {
+    "rewarded_download": "ca-app-pub-2091017524613192/6596829981",
+    "downlaod_button_ad": "ca-app-pub-2091017524613192/4962456755"
+  },
   "rewarded_interstitial": {
-    "videoDownloadReward": "ca-app-pub-6783189810116421/1304998253",
-    "unlockFullVideo": "ca-app-pub-6783189810116421/1304998253"
+    "unlock_video_reward": "ca-app-pub-2091017524613192/8669671000",
+    "download_reward_interstitial": "ca-app-pub-2091017524613192/4409650340",
+    "videoDownloadReward": "ca-app-pub-2091017524613192/6448936735",
+    "unlockFullVideo": "ca-app-pub-2091017524613192/6448936735"
   }
 }
 ''';
 
     await remoteConfig.setDefaults({'all_ads': defaultJson});
-
+debugPrint("====== ADS CONFIG ======");
+debugPrint("Banner Ads: $bannerAdUnitIds");
+debugPrint("Native Ads: $nativeAdUnitIds");
+debugPrint("Interstitial Ads: $interstitialAdUnitIds");
+debugPrint("Rewarded Ads: $rewardedAdUnitIds");
+debugPrint("Rewarded Interstitial Ads: $rewardedInterstitialAdUnitIds");
     try {
       await remoteConfig.fetchAndActivate();
 
       if (isTestMode) {
         debugPrint('🧪 TEST MODE ACTIVE: Using Test Ad Unit IDs');
         
-        // Populate all maps with test IDs
         bannerAdUnitIds.clear();
-        nativeVideoAdUnitIds.clear();
+        nativeAdUnitIds.clear();
         interstitialAdUnitIds.clear();
+        rewardedAdUnitIds.clear();
         rewardedInterstitialAdUnitIds.clear();
 
         _testAdUnitIds.forEach((key, value) {
-          // Naive assignment based on key naming convention 
-          // (robust enough since we know the keys we are using)
           if (key.contains("banner")) {
             bannerAdUnitIds[key] = value;
-          } else if (key.contains("Native")) {
-            nativeVideoAdUnitIds[key] = value;
-          } else if (key == "downloadAd" || key == "goToFullScreen" || key == "playButtonAd") {
+          } else if (key.contains("Native") || key.contains("native")) {
+            nativeAdUnitIds[key] = value;
+          } else if (key == "downloadAd" || key == "goToFullScreen" || key == "playButtonAd" || key.contains("interstitial")) {
             interstitialAdUnitIds[key] = value;
+          } else if (key == "rewarded_download" || key == "downlaod_button_ad" || key.contains("rewarded")) {
+            rewardedAdUnitIds[key] = value;
           } else if (key == "videoDownloadReward" || key == "unlockFullVideo") {
             rewardedInterstitialAdUnitIds[key] = value;
           }
@@ -111,22 +133,19 @@ class AdManager {
         final jsonString = remoteConfig.getString('all_ads');
         final Map<String, dynamic> data = json.decode(jsonString);
 
-        bannerAdUnitIds =
-            Map<String, String>.from(data['banner'] ?? {});
-        nativeVideoAdUnitIds =
-            Map<String, String>.from(data['native_video'] ?? {});
-        interstitialAdUnitIds =
-            Map<String, String>.from(data['interstitial'] ?? {});
-        rewardedInterstitialAdUnitIds =
-            Map<String, String>.from(data['rewarded_interstitial'] ?? {}); // ⭐
+        bannerAdUnitIds = Map<String, String>.from(data['banner'] ?? {});
+        // Fix: Use 'native' instead of 'native_video'
+        nativeAdUnitIds = Map<String, String>.from(data['native'] ?? data['native_video'] ?? {});
+        interstitialAdUnitIds = Map<String, String>.from(data['interstitial'] ?? {});
+        rewardedAdUnitIds = Map<String, String>.from(data['rewarded'] ?? {}); // ⭐ NEW
+        rewardedInterstitialAdUnitIds = Map<String, String>.from(data['rewarded_interstitial'] ?? {});
+      debugPrint("====== ADS CONFIG ======");
+debugPrint("Banner Ads: $bannerAdUnitIds");
+debugPrint("Native Ads: $nativeAdUnitIds");
+debugPrint("Interstitial Ads: $interstitialAdUnitIds");
+debugPrint("Rewarded Ads: $rewardedAdUnitIds");
+debugPrint("Rewarded Interstitial Ads: $rewardedInterstitialAdUnitIds");
       }
-
-      /*
-      debugPrint('✅ Banner IDs: $bannerAdUnitIds');
-      debugPrint('✅ Native Video IDs: $nativeVideoAdUnitIds');
-      debugPrint('✅ Interstitial IDs: $interstitialAdUnitIds');
-      debugPrint('✅ Rewarded Interstitial IDs: $rewardedInterstitialAdUnitIds');
-      */
     } catch (e) {
       debugPrint('⚠️ Remote Config fetch failed: $e');
     }

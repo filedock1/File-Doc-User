@@ -66,9 +66,35 @@ class _NativeVideoAdCardState extends State<NativeVideoAdCard> {
         }
       }
 
-      // 🔹 Hide if error
+      // 🔹 Show fallback if error
       if (isError) {
-        return const SizedBox.shrink();
+        final errorMsg = adController.errorMessage.value;
+        return Container(
+          height: widget.height,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade900,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey.shade800),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.video_library_outlined, color: Colors.grey, size: 40),
+                  const SizedBox(height: 12),
+                  Text(
+                    errorMsg.isNotEmpty ? errorMsg : "Ad unavailable",
+                    style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       }
 
       if (!isLoaded) {
