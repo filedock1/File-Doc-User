@@ -95,35 +95,56 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Future<void> _downloadWithAd(VideoModel video) async {
     if (_isAdLoading) return;
 
-    setState(() => _isAdLoading = true);
+    // Try fetching ad units from Remote Config, fallback to hardcoded if not present
+    final adId1 = AdManager.rewardedAdUnitIds["rewarded_download"] ?? "";
+    final adId2 = AdManager.rewardedAdUnitIds["downlaod_button_ad"] ?? "";
 
-    final adId = "ca-app-pub-2091017524613192/4962456755";
-
-    if (adId.isEmpty) {
+    if (adId1.isEmpty) {
       downloadController.startDownload(video);
       if (mounted) setState(() => _isAdLoading = false);
       return;
     }
 
-    debugPrint("🎬 Rewarded Ad Request ID: $adId");
-
+    debugPrint("🎬 1st Rewarded Ad Request ID: $adId1");
     RewardedAdManager().showAd(
-      adUnitId: adId,
-        onComplete: (bool earned) {
-          if (!mounted) return;
-
+      adUnitId: adId1,
+      onComplete: (bool earned1) {
+        if (!mounted) return;
+        
+        if (!earned1) {
           setState(() => _isAdLoading = false);
-
-          if (earned) {
-            downloadController.startDownload(video);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Watch full ad to download"),
-              ),
-            );
-          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Watch full ad to continue download")),
+          );
+          return;
         }
+
+        // If second ID is empty or same as first (which causes No Fill), skip and just download!
+        if (adId2.isEmpty || adId2 == adId1) {
+          setState(() => _isAdLoading = false);
+          downloadController.startDownload(video);
+          return;
+        }
+
+        // First ad watched successfully, load and show second ad
+        debugPrint("🎬 2nd Rewarded Ad Request ID: $adId2");
+        RewardedAdManager().showAd(
+          adUnitId: adId2,
+          onComplete: (bool earned2) {
+            if (!mounted) return;
+
+            setState(() => _isAdLoading = false);
+
+            if (earned2) {
+              downloadController.startDownload(video);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Watch full second ad to download")),
+              );
+            }
+          }
+        );
+      }
     );
   }
 
@@ -208,15 +229,17 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       backgroundColor: kblack,
       appBar: AppBar(
         backgroundColor: kbg1black500,
+        centerTitle: true,
+        title: const Text("", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: kwhite),
+          icon: Icon(Icons.arrow_back, color: kwhite),
           onPressed: () => Get.back(),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(height: 10), const SizedBox(height: 12),
             CustomVideoPlayer(
               videoModel: video,
               videoPath: playPath,
@@ -224,114 +247,143 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               onFullScreenToggle: _toggleFullScreen,
             ),
 
-            const SizedBox(height: 10),
-            Text(video.title,
-                style: TextStyle(color: kwhite, fontSize: 20)),
-
-            const SizedBox(height: 8),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.data_usage, color: kwhite300, size: 16),
-                const SizedBox(width: 4),
-                Text(video.size, style: TextStyle(color: kwhite300, fontSize: 13)),
-                
-                const SizedBox(width: 20),
-                Icon(Icons.calendar_month, color: kwhite300, size: 16),
-                const SizedBox(width: 4),
-                Text(_dateText(video.date), style: TextStyle(color: kwhite300, fontSize: 13)),
-
-
-              ],
-            ),
-
-            const SizedBox(height: 14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () => Share.share(
-                      "Watch this video:\nhttps://filedock.in/${video.id}"),
-                  child: _actionBtn("Share", Icons.share, Colors.white, Colors.black), // 🔥 High Contrast
-                ),
-                Obx(() {
-                  bool isDownloading = downloadController.isDownloading(video.url);
-                  double progress = downloadController.getProgress(video.url);
-
-                  if (isDownloading) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      decoration: BoxDecoration(color: kbg2lightblack300, borderRadius: BorderRadius.circular(30)),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 20, 
-                            height: 20, 
-                            child: CircularProgressIndicator(value: progress, color: kblueaccent, strokeWidth: 2),
-                          ),
-                          const SizedBox(width: 10),
-                          Text("${(progress * 100).toStringAsFixed(0)}%", style: TextStyle(color: kwhite, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    );
-                  }
-
-                  if (_isDownloaded) {
-                     return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                          decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(30)),
-                          child: Row(
-                            children: const [
-                              Icon(Icons.check_circle, color: Colors.white),
-                              SizedBox(width: 8),
-                              Text("Downloaded", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                            ],
-                          ),
-                        );
-                  }
-
-                  if (_isAdLoading) {
-                     return Container(
-                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                       decoration: BoxDecoration(color: kblueaccent, borderRadius: BorderRadius.circular(30)),
-                       child: const SizedBox(
-                         width: 24, height: 24,
-                         child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                       ),
-                     );
-                  }
-
-                  return InkWell(
-                          onTap: () => _downloadWithAd(video),
-                          child: _actionBtn("Download", Icons.download, kblueaccent, Colors.white), // 🔥 High Contrast
-                        );
-                }),
-              ],
-            ),
-
-            const SizedBox(height: 14),
+            const SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: NativeVideoAdCard(adKey: "videoscreenNative2"),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                video.title,
+                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            const SizedBox(height: 14),
+
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.remove_red_eye_outlined, color: Colors.grey, size: 14),
+                  const SizedBox(width: 4),
+                  const Text("0 views", style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  
+                  const SizedBox(width: 16),
+                  const Icon(Icons.calendar_today_outlined, color: Colors.grey, size: 14),
+                  const SizedBox(width: 4),
+                  Text(_dateText(video.date), style: const TextStyle(color: Colors.grey, fontSize: 12)),
+
+                  const SizedBox(width: 16),
+                  const Icon(Icons.sd_storage_outlined, color: Colors.grey, size: 14),
+                  const SizedBox(width: 4),
+                  Text(video.size, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () => Share.share("Watch this video:\nhttps://filedock.in/${video.id}"),
+                    child: _actionBtn("Share", Icons.ios_share_rounded),
+                  ),
+                  const SizedBox(width: 12),
+                  
+                  Obx(() {
+                    bool isDownloading = downloadController.isDownloading(video.url);
+                    double progress = downloadController.getProgress(video.url);
+
+                    if (isDownloading) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(color: const Color(0xFF1B1B2A), borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 14, 
+                              height: 14, 
+                              child: CircularProgressIndicator(value: progress, color: kblueaccent, strokeWidth: 2),
+                            ),
+                            const SizedBox(width: 8),
+                            Text("${(progress * 100).toStringAsFixed(0)}%", style: const TextStyle(color: Color(0xFFB0B0C3), fontWeight: FontWeight.w600, fontSize: 13)),
+                          ],
+                        ),
+                      );
+                    }
+
+                    if (_isDownloaded) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(color: Colors.green.withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          children: const [
+                            Icon(Icons.check_circle_outline, color: Colors.green, size: 18),
+                            SizedBox(width: 6),
+                            Text("Downloaded", style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600, fontSize: 13)),
+                          ],
+                        ),
+                      );
+                    }
+
+                    if (_isAdLoading) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(color: const Color(0xFF1B1B2A), borderRadius: BorderRadius.circular(20)),
+                        child: const SizedBox(
+                          width: 14, height: 14,
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        ),
+                      );
+                    }
+
+                    return InkWell(
+                      onTap: () => _downloadWithAd(video),
+                      child: _actionBtn("Download", Icons.download_outlined),
+                    );
+                  }),
+
+                  const SizedBox(width: 12),
+                  InkWell(
+                    onTap: () {},
+                    child: _actionBtn("Bookmark", Icons.bookmark_border),
+                  ),
+                  
+                  const SizedBox(width: 12),
+                  InkWell(
+                    onTap: () {},
+                    child: _actionBtn("Save", Icons.cloud_download_outlined),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: NativeVideoAdCard(adKey: "videoplayerscreenNative"),
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _actionBtn(String text, IconData icon, Color color, Color textColor) {
+  Widget _actionBtn(String text, IconData icon, {Color? bgColor, Color? textColor}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), // 📏 Increased padding
-      decoration:
-          BoxDecoration(color: color, borderRadius: BorderRadius.circular(30)), // 🎨 More rounded
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: bgColor ?? const Color(0xFF1B1B2A), // Matches the dark purple/blue from image
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
         children: [
-          Icon(icon, color: textColor),
-          const SizedBox(width: 8),
-          Text(text, style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16)),
+          Icon(icon, color: textColor ?? const Color(0xFFB0B0C3), size: 16),
+          const SizedBox(width: 6),
+          Text(text, style: TextStyle(color: textColor ?? const Color(0xFFB0B0C3), fontWeight: FontWeight.w600, fontSize: 13)),
         ],
       ),
     );

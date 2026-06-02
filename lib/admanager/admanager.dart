@@ -12,7 +12,7 @@ class AdManager {
   static Map<String, String> rewardedInterstitialAdUnitIds = {};
 
   /// 🛠️ TOGGLE THIS FOR TESTING VS PRODUCTION
-  static const bool isTestMode = false;
+  static bool isTestMode = false;
 
   /// 🧪 Standard Test IDs (Google AdMob)
   static final Map<String, String> _testAdUnitIds = {
@@ -49,47 +49,34 @@ class AdManager {
     const defaultJson = '''
 {
   "banner": {
-    "home_banner": "ca-app-pub-2091017524613192/2942701605",
-    "videos_banner": "ca-app-pub-2091017524613192/8987418512",
-    "player_banner": "ca-app-pub-2091017524613192/9106838014",
-    "download_banner": "ca-app-pub-2091017524613192/6859948628",
-    "more_banner": "ca-app-pub-2091017524613192/3820669009",
     "home_banner1": "ca-app-pub-2091017524613192/8812704874",
-    "home_banner2": "ca-app-pub-2091017524613192/8812704874",
-    "videoplayerscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
-    "videoplayerscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
-    "videoscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
-    "videoscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
-    "downloadscreen_banner1": "ca-app-pub-2091017524613192/8812704874",
-    "downloadscreen_banner2": "ca-app-pub-2091017524613192/8812704874",
-    "morescreen_banner1": "ca-app-pub-2091017524613192/8812704874",
-    "morescreen_banner2": "ca-app-pub-2091017524613192/8812704874"
+    "videoscreen_banner1": "ca-app-pub-2091017524613192/7904491152",
+    "videoplayerscreen_banner1": "ca-app-pub-2091017524613192/9300630667",
+    "downloadscreen_banner1": "ca-app-pub-2091017524613192/7009580998",
+    "morescreen_banner1": "ca-app-pub-2091017524613192/8938079649",
+    "morescreen_banner2": "ca-app-pub-2091017524613192/7671925971"
   },
+
   "native": {
-    "home_native": "ca-app-pub-2091017524613192/1194505660",
-    "videos_native": "ca-app-pub-2091017524613192/5546866954",
-    "player_native": "ca-app-pub-2091017524613192/6255260652",
-    "videoscreenNative1": "ca-app-pub-2091017524613192/8829958694",
-    "videoscreenNative2": "ca-app-pub-2091017524613192/8829958694",
-    "videoscreenNative3": "ca-app-pub-2091017524613192/8829958694",
-    "videoplayerscreenNative": "ca-app-pub-2091017524613192/8829958694"
+    "home_native": "ca-app-pub-2091017524613192/7697381673",
+    "videoscreenNative1": "ca-app-pub-2091017524613192/1981789058",
+    "videoscreenNative2": "ca-app-pub-2091017524613192/3517457926",
+    "videoplayerscreenNative": "ca-app-pub-2091017524613192/2204376253"
   },
+
   "interstitial": {
     "fullscreen_interstitial": "ca-app-pub-2091017524613192/8689852303",
     "action_interstitial": "ca-app-pub-2091017524613192/9982752673",
-    "downloadAd": "ca-app-pub-2091017524613192/5158028067",
-    "goToFullScreen": "ca-app-pub-2091017524613192/5158028067",
-    "playButtonAd": "ca-app-pub-2091017524613192/5158028067"
+    "goToFullScreen": "ca-app-pub-2091017524613192/5158028067"
   },
+
   "rewarded": {
-    "rewarded_download": "ca-app-pub-2091017524613192/6596829981",
-    "downlaod_button_ad": "ca-app-pub-2091017524613192/4962456755"
+    "rewarded_download": "ca-app-pub-2091017524613192/4962456755"
   },
+
   "rewarded_interstitial": {
     "unlock_video_reward": "ca-app-pub-2091017524613192/8669671000",
-    "download_reward_interstitial": "ca-app-pub-2091017524613192/4409650340",
-    "videoDownloadReward": "ca-app-pub-2091017524613192/6448936735",
-    "unlockFullVideo": "ca-app-pub-2091017524613192/6448936735"
+    "videoDownloadReward": "ca-app-pub-2091017524613192/6448936735"
   }
 }
 ''';

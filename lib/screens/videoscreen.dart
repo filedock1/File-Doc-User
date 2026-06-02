@@ -28,6 +28,7 @@ class _VideoScreenState extends State<VideoScreen> {
   bool _isLoading = false;
   bool _isButtonVisible = false;
   int _adsProcessedCount = 0;
+  bool _loadSecondaryAd = false; // 🔥 Flag to sequentially load the second ad
 
   // ⏳ COUNTDOWN STATE
   bool _isCountdown = false;
@@ -45,6 +46,9 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   void _onAdProcessed() {
+    if (!_loadSecondaryAd && mounted) {
+      setState(() => _loadSecondaryAd = true);
+    }
     _adsProcessedCount++;
     if (_adsProcessedCount >= 4 && mounted && !_isButtonVisible) {
       setState(() => _isButtonVisible = true);
@@ -230,13 +234,14 @@ class _VideoScreenState extends State<VideoScreen> {
                   ),
 
                 const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
-                  child: NativeVideoAdCard(
-                    adKey: 'videoscreenNative1',
-                    onAdLoaded: _onAdProcessed,
+                if (_loadSecondaryAd)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+                    child: NativeVideoAdCard(
+                      adKey: 'videoscreenNative1',
+                      onAdLoaded: _onAdProcessed,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

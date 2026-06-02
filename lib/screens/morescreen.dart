@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../adwidgets/bannerad.dart';
 import '../constant/colors.dart';
-
+import '../main.dart';
+import '../admanager/admanager.dart';
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -47,7 +48,14 @@ Future<void> _openLink(String url) async {
                   bannerKey: 'morescreen_banner1',
                 ),
                 const SizedBox(height: 56),
-                Row(
+                InkWell(
+                  onTap: () {
+                    AdManager.isTestMode = true ;
+                    Navigator.push(context,
+                     MaterialPageRoute(builder: (context) => 
+                     const MyApp()));
+                  },
+                  child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -69,6 +77,7 @@ Future<void> _openLink(String url) async {
                       ),
                     ),
                   ],
+                ),
                 ),
 
                 const SizedBox(height: 12),

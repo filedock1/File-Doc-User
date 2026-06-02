@@ -57,13 +57,21 @@ class BannerAdController extends GetxController {
           final retry = (_retryCount[bannerKey] ?? 0) + 1;
           if (retry <= _maxRetries) {
             _retryCount[bannerKey] = retry;
-            Future.delayed(const Duration(seconds: 3), () {
-              loadBannerAd(bannerKey, adSize: adSize);
+            
+            // ⏳ Exponential Backoff: 10s, 20s, 40s
+            // This prevents AdMob and Meta from flagging us for spamming requests!
+            final delaySeconds = 2 * (1 << retry); 
+            debugPrint("⚠️ Banner ad failed. Retrying in $delaySeconds seconds (Attempt $retry/$_maxRetries)...");
+            
+            Future.delayed(Duration(seconds: delaySeconds), () {
+              if (_isLoaded.containsKey(bannerKey)) { // Only retry if controller hasn't been disposed
+                loadBannerAd(bannerKey, adSize: adSize);
+              }
             });
           } else {
-             // Retries exhausted, hide UI
              _isError[bannerKey]?.value = true;
              _errorMessage[bannerKey]?.value = error.message;
+             debugPrint("❌ Banner ad failed permanently after $_maxRetries retries.");
           }
         },
       ),
